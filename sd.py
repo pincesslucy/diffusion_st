@@ -1,5 +1,5 @@
 import torch
-from diffusers import DiffusionPipeline, StableDiffusionPipeline, AutoPipelineForText2Image
+from diffusers import DiffusionPipeline, StableDiffusionPipeline, AutoPipelineForText2Image, StableDiffusionImg2ImgPipeline
 from diffusers import DPMSolverMultistepScheduler
 import random
 from PIL import Image
@@ -15,6 +15,15 @@ def get_inputs(prompt, batch_size=1):
     num_inference_steps = 10
 
     return {"prompt": prompts, "generator": generator, "num_inference_steps": num_inference_steps}
+
+def get_image(prompt, image, batch_size=1):
+    seed = random.randint(0,9999999)
+    generator = [torch.Generator("cuda").manual_seed(seed+i) for i in range(batch_size)]
+    prompts = batch_size * [prompt]
+    strength=0.75
+    guidance_scale=7.5
+
+    return {"prompt": prompts, "image": image, "generator": generator, "strength": strength, "guidance_scale": guidance_scale}
 
 #시각화
 def image_grid(imgs, rows=1, cols=1):
@@ -52,6 +61,19 @@ def generate(prompt):
     image = image_grid(image)
 
     return image
+
+def generate_i2i(prompt, image):
+    prompt = prompt
+    #추가 프롬프트
+    prompt += "ghibli style"
+
+    pipeline = StableDiffusionImg2ImgPipeline.from_pretrained("nitrosocke/Ghibli-Diffusion", torch_dtype=torch.float16)
+    pipeline = pipeline.to("cuda")
+
+    result = pipeline(**get_image(prompt, image)).images[0]
+    print(result)
+
+    return result
 
 # #테스트
 # if __name__ == "__main__":
