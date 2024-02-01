@@ -20,7 +20,7 @@ def get_image(prompt, image, batch_size=1):
     seed = random.randint(0,9999999)
     generator = [torch.Generator("cuda").manual_seed(seed+i) for i in range(batch_size)]
     prompts = batch_size * [prompt]
-    strength=0.7
+    strength=0.6
     guidance_scale=8.5
 
     return {"prompt": prompts, "image": image, "generator": generator, "strength": strength, "guidance_scale": guidance_scale}
