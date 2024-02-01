@@ -20,8 +20,8 @@ def get_image(prompt, image, batch_size=1):
     seed = random.randint(0,9999999)
     generator = [torch.Generator("cuda").manual_seed(seed+i) for i in range(batch_size)]
     prompts = batch_size * [prompt]
-    strength=0.75
-    guidance_scale=7.5
+    strength=0.7
+    guidance_scale=8.5
 
     return {"prompt": prompts, "image": image, "generator": generator, "strength": strength, "guidance_scale": guidance_scale}
 
@@ -55,7 +55,7 @@ def generate(prompt):
 def generate_i2i(prompt, image):
     prompt = prompt
     #추가 프롬프트
-    prompt += "ghibli style"
+    prompt += "ghibli style, best quality, masterpiece"
 
     pipeline = StableDiffusionImg2ImgPipeline.from_pretrained("nitrosocke/Ghibli-Diffusion", torch_dtype=torch.float16)
     pipeline = pipeline.to("cuda")
