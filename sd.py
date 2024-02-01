@@ -1,6 +1,5 @@
 import torch
 from diffusers import DiffusionPipeline
-import matplotlib.pyplot as plt
 from diffusers import DPMSolverMultistepScheduler
 import random
 from PIL import Image
