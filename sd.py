@@ -1,11 +1,11 @@
 import torch
-from diffusers import DiffusionPipeline
+from diffusers import DiffusionPipeline, StableDiffusionPipeline, AutoPipelineForText2Image
 from diffusers import DPMSolverMultistepScheduler
 import random
 from PIL import Image
 from diffusers import AutoencoderKL
 
-
+import matplotlib.pyplot as plt
 
 #생성 갯수
 def get_inputs(prompt, batch_size=1):
@@ -32,18 +32,18 @@ def generate(prompt):
     prompt += "best quality, photorealistic, dramatic lighting, raw photo,  ultra realistic details, sharp focus"
 
     #모델 설정
-    model_id = "runwayml/stable-diffusion-v1-5"
-    pipeline = DiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32, safety_checker=None)
+    model_id = "Lykon/dreamshaper-xl-turbo"
+    pipeline = AutoPipelineForText2Image.from_pretrained(model_id, torch_dtype=torch.float16, variant="fp16")
 
     #스케줄러 설정
     pipeline.scheduler = DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
 
-    #vae설정
-    vae = AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse", torch_dtype=torch.float32).to("cuda")
-    pipeline.vae = vae
+    # #vae설정
+    # vae = DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
+    # pipeline.vae = vae
 
     #메모리 부족할 때
-    pipeline.enable_attention_slicing()
+    # pipeline.enable_attention_slicing()
 
     pipeline = pipeline.to("cuda")
 
@@ -53,7 +53,9 @@ def generate(prompt):
 
     return image
 
-#테스트
-if __name__ == "__main__":
-    prompt = "a painting of a cat"
-    generate(prompt)
+# #테스트
+# if __name__ == "__main__":
+#     prompt = "a painting of a cat"
+#     image = generate(prompt)
+#     plt.imshow(image)
+#     plt.show()
