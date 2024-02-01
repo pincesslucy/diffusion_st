@@ -25,15 +25,6 @@ def get_image(prompt, image, batch_size=1):
 
     return {"prompt": prompts, "image": image, "generator": generator, "strength": strength, "guidance_scale": guidance_scale}
 
-#시각화
-def image_grid(imgs, rows=1, cols=1):
-    w, h = imgs[0].size
-    grid = Image.new("RGB", size=(cols * w, rows * h))
-
-    for i, img in enumerate(imgs):
-        grid.paste(img, box=(i % cols * w, i // cols * h))
-    return grid
-
 #프롬프트
 def generate(prompt):
     prompt = prompt
@@ -56,9 +47,8 @@ def generate(prompt):
 
     pipeline = pipeline.to("cuda")
 
-    image = pipeline(**get_inputs(prompt)).images
+    image = pipeline(**get_inputs(prompt)).images[0]
     print(image)
-    image = image_grid(image)
 
     return image
 

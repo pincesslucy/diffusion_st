@@ -9,13 +9,17 @@ st.set_page_config(
 
 st.header("그림 그려줌", divider="rainbow")
 
+
+content = st.text_input("그린 것 설명(영어로)")
 # 색상 선택기
 stroke_color = st.color_picker("선 색상 선택", '#000000')
+# 선의 너비를 사용자가 선택 가능하도록 슬라이더 추가
+stroke_width = st.slider("굵기 선택", min_value=1, max_value=50, value=2)
 
 # 그림 그리기 캔버스 만들기
 canvas_result = st_canvas(
-    fill_color="rgba(0, 0, 0, 0)",  # 채우기 색상
-    stroke_width=2,  # 선의 너비
+    fill_color="gba(0, 0, 0)",  # 채우기 색상
+    stroke_width=stroke_width,  # 선의 너비
     stroke_color=stroke_color,  # 사용자가 선택한 선의 색상
     background_color="#ffffff",  # 배경색
     height=500,  # 캔버스의 높이
