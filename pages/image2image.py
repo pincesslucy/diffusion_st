@@ -18,7 +18,7 @@ stroke_width = st.slider("굵기 선택", min_value=1, max_value=50, value=2)
 
 # 그림 그리기 캔버스 만들기
 canvas_result = st_canvas(
-    fill_color="gba(0, 0, 0)",  # 채우기 색상
+    fill_color="rgb(0, 0, 0)",  # 채우기 색상
     stroke_width=stroke_width,  # 선의 너비
     stroke_color=stroke_color,  # 사용자가 선택한 선의 색상
     background_color="#ffffff",  # 배경색
