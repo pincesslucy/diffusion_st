@@ -7,9 +7,9 @@ st.set_page_config(
     page_title='i2i'
 )
 
-st.header("그림 그려줌(안써도됨)", divider="rainbow")
+st.header("그림 그려줌", divider="rainbow")
 
-content = st.text_input("그린 것 설명(영어로)")
+content = st.text_input("그린 것 설명(영어로)(안써도됨)")
 
 
 
@@ -40,7 +40,7 @@ else:
         st.image(image, caption='Uploaded Image.', use_column_width=True)
 
 button = st.button("그림 제출")
-
+st.text("**********검정 그림 나오면 제출 한번 더 누르기***********")
 if button:
     with st.spinner('그림 그리는중...'):
         if not check:

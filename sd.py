@@ -12,18 +12,22 @@ def get_inputs(prompt, batch_size=1):
     seed = random.randint(0,9999999)
     generator = [torch.Generator("cuda").manual_seed(seed+i) for i in range(batch_size)]
     prompts = batch_size * [prompt]
+    negative_prompt = "nsfw, nude, ugly"
+    negative_prompts = batch_size * [negative_prompt]
     num_inference_steps = 10
 
-    return {"prompt": prompts, "generator": generator, "num_inference_steps": num_inference_steps}
+    return {"prompt": prompts, "negative_prompt": negative_prompts, "generator": generator, "num_inference_steps": num_inference_steps}
 
 def get_image(prompt, image, batch_size=1):
     seed = random.randint(0,9999999)
     generator = [torch.Generator("cuda").manual_seed(seed+i) for i in range(batch_size)]
     prompts = batch_size * [prompt]
-    strength=0.6
+    negative_prompt = "nsfw, nude, ugly"
+    negative_prompts = batch_size * [negative_prompt]
+    strength=0.7
     guidance_scale=8.5
 
-    return {"prompt": prompts, "image": image, "generator": generator, "strength": strength, "guidance_scale": guidance_scale}
+    return {"prompt": prompts, "negative_prompt": negative_prompts, "image": image, "generator": generator, "strength": strength, "guidance_scale": guidance_scale}
 
 #프롬프트
 def generate(prompt):
@@ -56,7 +60,6 @@ def generate_i2i(prompt, image):
     prompt = prompt
     #추가 프롬프트
     prompt += "ghibli style, best quality, masterpiece"
-
     pipeline = StableDiffusionImg2ImgPipeline.from_pretrained("nitrosocke/Ghibli-Diffusion", torch_dtype=torch.float16)
     pipeline = pipeline.to("cuda")
 
